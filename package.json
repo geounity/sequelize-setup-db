@@ -21,6 +21,7 @@
   "homepage": "https://github.com/geounity/db#readme",
   "devDependencies": {
     "ava": "^0.25.0",
+    "js-yaml": ">=3.13.1",
     "longjohn": "^0.2.12",
     "minimist": "^1.2.0",
     "nyc": "^11.7.1",
