@@ -10,7 +10,7 @@ const connectionDB = require('./lib/db')
 // Modelos
 const setupAimModel = require('./models/aim')
 const setupAnswerModel = require('./models/answer')
-const setupCommunityModel = require('./models/community')
+const setupGeocommunityModel = require('./models/geocommunity')
 const setupCommunityFundModel = require('./models/community_fund')
 const setupCountryModel = require('./models/country')
 const setupDebateModel = require('./models/debate')
@@ -31,6 +31,8 @@ const setupSubQuestionModel = require('./models/subquestion')
 const setupUserModel = require('./models/user')
 
 // Servicios
+const GeocommunityService = require('./lib/geocommunity')
+const CountryService = require('./lib/country')
 const UserService = require('./lib/user')
 const DebateService = require('./lib/debate')
 
@@ -41,7 +43,7 @@ module.exports = async function (config) {
   // Instancias de los modelos
   const AimModel = setupAimModel(config)
   const AnswerModel = setupAnswerModel(config)
-  const CommunityModel = setupCommunityModel(config)
+  const GeocommunityModel = setupGeocommunityModel(config)
   const CommunityFundModel = setupCommunityFundModel(config)
   const CountryModel = setupCountryModel(config)
   const DebateModel = setupDebateModel(config)
@@ -71,25 +73,26 @@ module.exports = async function (config) {
   AnswerModel.belongsTo(UserModel)
   AnswerModel.belongsTo(QuestionAimModel)
   AnswerModel.hasMany(SubQuestionModel)
-  CommunityModel.belongsToMany(UserModel, { through: 'R_user_community' })
-  CommunityModel.hasMany(AimModel)
-  CommunityModel.hasMany(DebateModel)
-  CommunityModel.hasMany(PollModel)
-  CommunityModel.hasOne(GroupsModel)
-  CommunityModel.hasOne(OrganizationModel)
-  CommunityModel.hasOne(RegionModel)
+  GeocommunityModel.belongsToMany(UserModel, { through: 'R_user_geocommunity' })
+  GeocommunityModel.hasMany(AimModel)
+  GeocommunityModel.hasMany(DebateModel)
+  GeocommunityModel.hasMany(PollModel)
+  GeocommunityModel.hasOne(GroupsModel)
+  GeocommunityModel.hasOne(OrganizationModel)
+  GeocommunityModel.hasOne(RegionModel)
+  GeocommunityModel.belongsTo(GeocommunityModel)
   CommunityFundModel.belongsTo(AimModel)
   CommunityFundModel.belongsTo(UserModel)
   CommunityFundModel.hasMany(DonationsModel)
   CountryModel.hasMany(StateModel)
-  CountryModel.belongsTo(CommunityModel)
+  CountryModel.belongsTo(GeocommunityModel)
   DebateModel.belongsTo(UserModel)
   DebateModel.belongsToMany(AimModel, { through: 'R_debate_aim' })
   DebateModel.belongsToMany(PollModel, { through: 'R_debate_poll' })
   DonationsModel.belongsTo(UserModel)
   DonationsModel.belongsTo(CommunityFundModel)
   OpinionModel.belongsTo(UserModel)
-  OpinionModel.belongsTo(CommunityModel)
+  OpinionModel.belongsTo(GeocommunityModel)
   OpinionModel.belongsToMany(StaticModel, { through: 'R_static_opinion' })
   QuestionAimModel.belongsTo(UserModel)
   QuestionAimModel.belongsTo(AimModel)
@@ -99,7 +102,7 @@ module.exports = async function (config) {
   ResourceMaterialModel.belongsTo(UserModel, { through: 'R_rm_user' })
   ResourceMaterialModel.belongsTo(AimModel)
   StateModel.belongsTo(CountryModel)
-  StateModel.belongsTo(CommunityModel)
+  StateModel.belongsTo(GeocommunityModel)
   StaticModel.belongsToMany(OpinionModel, { through: 'R_static_opinion' })
   SubAnswerModel.belongsTo(UserModel)
   SubAnswerModel.belongsToMany(SubQuestionModel, {
@@ -112,8 +115,8 @@ module.exports = async function (config) {
   })
   PollModel.belongsTo(UserModel)
   PollModel.belongsToMany(DebateModel, { through: 'R_debate_poll' })
-  PollModel.belongsTo(CommunityModel)
-  UserModel.belongsToMany(CommunityModel, { through: 'R_user_community' })
+  PollModel.belongsTo(GeocommunityModel)
+  UserModel.belongsToMany(GeocommunityModel, { through: 'R_user_geocommunity' })
   UserModel.hasMany(AimModel)
   UserModel.hasMany(DebateModel)
   UserModel.hasMany(PollModel)
@@ -131,18 +134,19 @@ module.exports = async function (config) {
   // El que llame a la funcion con async tendrá que hacer el control de errores
   await sequelize.authenticate()
 
+  console.log(`SETUP: ${config.setup}`)
   if (config.setup) {
     await sequelize.sync({ force: true })
   }
 
   const Aim = {}
   const Answer = {}
-  const Community = {}
   const CommunityFund = {}
-  const Country = {}
+  const Country = CountryService(CountryModel)
   const Debate = DebateService(DebateModel, UserModel)
   const Denuncias = {}
   const Donation = {}
+  const Geocommunity = GeocommunityService(GeocommunityModel)
   const Opinion = {}
   const Organization = {}
   const Poll = {}
@@ -159,12 +163,12 @@ module.exports = async function (config) {
   return {
     Aim,
     Answer,
-    Community,
     CommunityFund,
     Country,
     Debate,
     Denuncias,
     Donation,
+    Geocommunity,
     Opinion,
     Organization,
     QuestionAim,
