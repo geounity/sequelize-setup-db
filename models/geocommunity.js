@@ -11,7 +11,9 @@ module.exports = config => {
     {
       uuid: {
         type: Sequelize.UUID,
-        allowNull: false
+        // allowNull: false,
+        unique: true,
+        defaultValue: Sequelize.UUIDV4
       },
       name: {
         type: Sequelize.STRING(100),
@@ -20,6 +22,23 @@ module.exports = config => {
       level: {
         type: Sequelize.INTEGER,
         allowNull: false
+      },
+      population: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        default: 0
+      },
+      division_name: {
+        type: Sequelize.STRING(50),
+        allowNull: true
+      },
+      in_uuid: {
+        type: Sequelize.UUID,
+        references: {
+          model: 'geocommunities',
+          key: 'uuid',
+          deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
+        }
       }
     },
     {

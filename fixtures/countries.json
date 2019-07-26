@@ -111,9 +111,6 @@
     "timezones": [
       "UTC+02:00"
     ],
-    "borders": [
-
-    ],
     "nativeName": "Åland",
     "numericCode": "248",
     "currencies": [{
@@ -1884,7 +1881,7 @@
     "cioc": "BHU"
   },
   {
-    "name": "Bolivia (Plurinational State of)",
+    "name": "Bolivia",
     "topLevelDomain": [
       ".bo"
     ],

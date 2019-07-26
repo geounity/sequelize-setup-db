@@ -2,36 +2,22 @@
 
 const Sequelize = require('sequelize')
 const connectionDB = require('../lib/db')
+class Country extends Sequelize.Model { }
 
-module.exports = (config) => {
+module.exports = config => {
   const sequelize = connectionDB(config)
-
-  return sequelize.define('country', {
-    name: {
-      type: Sequelize.STRING(100),
-      allowNull: false
-    },
+  return Country.init({
     code: {
-      type: Sequelize.STRING(2),
-      unique: true,
-      allowNull: true
-    },
-    flag: {
-      type: Sequelize.STRING(40),
-      unique: true,
-      allowNull: true
-    },
-    in_continent: {
-      type: Sequelize.STRING(15),
+      type: Sequelize.CHAR(2),
       allowNull: false
     },
-    subregion: {
+    country: {
       type: Sequelize.STRING(50),
       allowNull: false
     }
   },
-
   {
-
+    sequelize,
+    modelName: 'country'
   })
 }

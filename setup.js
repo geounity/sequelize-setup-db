@@ -24,6 +24,7 @@ async function setup () {
     }
   }
 
+  // npm run setup -- --dev (development mode)
   if (args.dev) {
     await db(config.dev)
       .then(() => {
@@ -44,38 +45,51 @@ async function setup () {
   const countries = require('./fixtures/countries')
 
   // Create first community global
-  const { Geocommunity, Country } = await db(config.dev).catch(handleFatalError)
+  // Every one geocommunity is in other inside. Except global. Here inside inself
+  const { Geocommunity } = await db(config.dev).catch(handleFatalError)
   await Geocommunity.create({
     name: 'Global',
     level: 1,
-    geocommunity_id: 1
+    division_name: 'continents'
   })
 
-  // Create second community continents
-  let id = await Geocommunity.getIdByName('Global', 1)
+  // Create second community - Continents
+  let uuid = await Geocommunity.getUuidByNameAndLevel('Global', 1)
   for (let c of continents) {
     await Geocommunity.create({
       name: c.name,
       level: 2,
-      geocommunity_id: id
+      division_name: 'countries',
+      in_uuid: uuid
     })
   }
 
   // Create third community countries and save country table
   for (let c of countries) {
-    let id = await Geocommunity.getIdByName(c.region, 2)
+    let uuid = await Geocommunity.getUuidByNameAndLevel(c.region, 2)
+    let divisionName = 'Provincias'
+    switch (c.alpha2Code) {
+      case 'UY':
+        divisionName = 'Departamentos'
+        break
+      case 'US':
+        divisionName = 'Estados'
+    }
     await Geocommunity.create({
       name: c.name,
       level: 3,
-      geocommunity_id: id
+      population: c.population,
+      division_name: divisionName,
+      in_uuid: uuid
     })
-    await Country.create({
-      name: c.name,
-      code: c.alpha2Code,
-      flag: c.flag,
-      in_continent: c.region,
-      subregion: c.subregion
-    })
+    // await Country.create({
+    //   name: c.name,
+    //   code: c.alpha2Code,
+    //   flag: c.flag,
+    //   population: c.population,
+    //   division_name: divisionName,
+    //   in_continent: c.region,'use strict'
+
   }
 }
 

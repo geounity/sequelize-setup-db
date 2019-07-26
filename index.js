@@ -80,7 +80,6 @@ module.exports = async function (config) {
   GeocommunityModel.hasOne(GroupsModel)
   GeocommunityModel.hasOne(OrganizationModel)
   GeocommunityModel.hasOne(RegionModel)
-  GeocommunityModel.belongsTo(GeocommunityModel)
   CommunityFundModel.belongsTo(AimModel)
   CommunityFundModel.belongsTo(UserModel)
   CommunityFundModel.hasMany(DonationsModel)
