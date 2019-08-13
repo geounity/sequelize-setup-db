@@ -11,11 +11,6 @@ module.exports = config => {
   return sequelize.define(
     'user',
     {
-      authid: {
-        type: Sequelize.INTEGER,
-        unique: true,
-        allowNull: false
-      },
       username: {
         type: Sequelize.STRING(15),
         unique: true,
@@ -38,12 +33,22 @@ module.exports = config => {
       name: {
         type: Sequelize.STRING(50),
         allowNull: true,
-        validate: { notEmpty: true }
       },
       lastname: {
         type: Sequelize.STRING(50),
         allowNull: true,
-        validate: { notEmpty: true }
+      },
+      service: {
+        type: Sequelize.STRING(20),
+        allowNull: true
+      },
+      id_doc_firestore: {
+        type: Sequelize.STRING(20),
+        allowNull: true
+      },
+      photo: {
+        type: Sequelize.STRING(400),
+        allowNull: true
       },
       datebirth: {
         type: Sequelize.DATEONLY,

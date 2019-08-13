@@ -1,5 +1,7 @@
 'use strict'
 
+const fs = require('fs')
+
 const db = require('./')
 const config = require('./config')
 
@@ -25,28 +27,44 @@ async function setup () {
   }
 
   // npm run setup -- --dev (development mode)
+  let conn = {}
   if (args.dev) {
-    await db(config.dev)
-      .then(() => {
-        console.log(chalk.cyan('----------------------------------------------------------------------'))
-        console.log(chalk.green('[Success!]'))
-      })
-      .catch(handleFatalError)
+    try {
+      conn = await db(config.dev)
+      console.log(chalk.cyan('----------------------------------------------------------------------'))
+      console.log(chalk.green('[Success!]'))
+    } catch (e) {
+      handleFatalError(e)
+    }
   } else {
-    await db(config.production)
-      .then(() => {
-        console.log(chalk.cyan('----------------------------------------------------------------------'))
-        console.log(chalk.green('[Success!]'))
-      })
-      .catch(handleFatalError)
+    try {
+      conn = await db(config.production)
+      console.log(chalk.cyan('----------------------------------------------------------------------'))
+      console.log(chalk.green('[Success!]'))
+    } catch (e) {
+      handleFatalError(e)
+    }
   }
 
+  // SQL Files
+  const countriesSQL = fs.readFileSync('./fixtures/Countries.sql').toString()
+  const statesSQL = fs.readFileSync('./fixtures/States.sql').toString()
+
+  // Node-Postgres conection
+  // clients use environment variables
+  const { Client } = require('pg')
+  const client = new Client()
+  await client.connect()
+  await client.query(countriesSQL, (err) => err ? handleFatalError(err) : '')
+  await client.query(statesSQL, (err) => err ? handleFatalError(err) : '')
+
+  // JSON files of http://restcountries.es
   const continents = require('./fixtures/continents')
   const countries = require('./fixtures/countries')
 
   // Create first community global
   // Every one geocommunity is in other inside. Except global. Here inside inself
-  const { Geocommunity } = await db(config.dev).catch(handleFatalError)
+  const { Geocommunity, Country, State } = await conn
   await Geocommunity.create({
     name: 'Global',
     level: 1,
@@ -67,30 +85,55 @@ async function setup () {
   // Create third community countries and save country table
   for (let c of countries) {
     let uuid = await Geocommunity.getUuidByNameAndLevel(c.region, 2)
-    let divisionName = 'Provincias'
+    let divisionName
     switch (c.alpha2Code) {
       case 'UY':
         divisionName = 'Departamentos'
         break
-      case 'US':
+      case 'AR':
+        divisionName = 'Provincias'
+        break
+      default:
         divisionName = 'Estados'
     }
-    await Geocommunity.create({
+    let created = await Geocommunity.create({
       name: c.name,
       level: 3,
       population: c.population,
       division_name: divisionName,
       in_uuid: uuid
     })
-    // await Country.create({
-    //   name: c.name,
-    //   code: c.alpha2Code,
-    //   flag: c.flag,
-    //   population: c.population,
-    //   division_name: divisionName,
-    //   in_continent: c.region,'use strict'
-
+    let subsql = `SELECT COUNT(*) FROM states WHERE country_id = (SELECT id FROM countries WHERE code = '${c.alpha2Code}')`
+    let sql = `
+      UPDATE countries
+      SET flag='${c.flag}',
+          population=${c.population},
+          in_continent='${c.region}',
+          subregion='${c.subregion}',
+          division_name='${divisionName}',
+          cant_states=(${subsql}),
+          geocommunity_uuid='${created.dataValues.uuid}'
+      WHERE code='${c.alpha2Code}'`
+    await client.query(sql)
+    console.log('Country: ', c.name)
   }
+
+  // Create ford community states and save state table
+  let states = await State.getAllStates()
+  for (let s of states) {
+    let { country } = await Country.getNameById(s.countryId)
+    let uuid = await Geocommunity.getUuidByNameAndLevel(country, 3)
+    let created = await Geocommunity.create({
+      name: s.state,
+      level: 4,
+      in_uuid: uuid
+    })
+    let sql = `UPDATE states SET geocommunity_uuid='${created.dataValues.uuid}' WHERE id='${s.id}'`
+    await client.query(sql)
+    console.log('States: ', s.state, ' id: ', s.id)
+  }
+  await client.end()
+
 }
 
 function handleFatalError (err) {

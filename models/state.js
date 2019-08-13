@@ -10,10 +10,21 @@ module.exports = config => {
     state: {
       type: Sequelize.STRING(50),
       allowNull: false
+    },
+    created_at: {
+      type: Sequelize.DATE,
+      allowNull: true,
+      defaultValue: new Date()
+    },
+    updated_at: {
+      type: Sequelize.DATE,
+      allowNull: true,
+      defaultValue: new Date()
     }
   },
   {
     sequelize,
-    modelName: 'state'
+    modelName: 'state',
+    timestamps: false
   })
 }

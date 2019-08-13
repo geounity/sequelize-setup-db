@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "DEBUG=gu:* nyc --reporter=lcov ava tests/ --verbose",
-    "setup": "DEBUG=gu:* node setup.js",
+    "setup": "PGUSER=seba PGHOST=localhost PGPASSWORD='Luis Alberto Spinetta' PGDATABASE=geounity_db PGPORT=5432 DEBUG=gu:* node setup.js",
     "lint": "standard --fix"
   },
   "repository": {

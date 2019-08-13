@@ -33,6 +33,7 @@ const setupUserModel = require('./models/user')
 // Servicios
 const GeocommunityService = require('./lib/geocommunity')
 const CountryService = require('./lib/country')
+const StateService = require('./lib/state')
 const UserService = require('./lib/user')
 const DebateService = require('./lib/debate')
 
@@ -137,6 +138,7 @@ module.exports = async function (config) {
   if (config.setup) {
     await sequelize.sync({ force: true })
   }
+  console.log('--FINISH SYNC--')
 
   const Aim = {}
   const Answer = {}
@@ -154,7 +156,7 @@ module.exports = async function (config) {
   const ResourceHuman = {}
   const ResourceMaterial = {}
   const SubQuestion = {}
-  const State = {}
+  const State = StateService(StateModel)
   const Static = {}
   // const Subquestion = {}
   const User = UserService(UserModel)

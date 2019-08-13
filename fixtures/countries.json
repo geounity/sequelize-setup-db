@@ -1978,7 +1978,7 @@
     "cioc": "BOL"
   },
   {
-    "name": "Bonaire, Sint Eustatius and Saba",
+    "name": "Bonaire, Saint Eustatius and Saba",
     "topLevelDomain": [
       ".an",
       ".nl"
@@ -2432,7 +2432,7 @@
     "cioc": ""
   },
   {
-    "name": "Virgin Islands (British)",
+    "name": "Virgin Islands",
     "topLevelDomain": [
       ".vg"
     ],
@@ -2563,7 +2563,7 @@
     "cioc": "ISV"
   },
   {
-    "name": "Brunei Darussalam",
+    "name": "Brunei",
     "topLevelDomain": [
       ".bn"
     ],
@@ -4555,7 +4555,7 @@
     "cioc": "CYP"
   },
   {
-    "name": "Czech Republic",
+    "name": "Czechia",
     "topLevelDomain": [
       ".cz"
     ],
@@ -7934,7 +7934,7 @@
     "cioc": "INA"
   },
   {
-    "name": "Côte d'Ivoire",
+    "name": "Ivory Coast",
     "topLevelDomain": [
       ".ci"
     ],
@@ -9161,7 +9161,7 @@
     "cioc": "KGZ"
   },
   {
-    "name": "Lao People's Democratic Republic",
+    "name": "Laos",
     "topLevelDomain": [
       ".la"
     ],
@@ -9947,7 +9947,7 @@
     "cioc": ""
   },
   {
-    "name": "Macedonia (the former Yugoslav Republic of)",
+    "name": "Macedonia",
     "topLevelDomain": [
       ".mk"
     ],
@@ -10939,7 +10939,7 @@
     "cioc": "MEX"
   },
   {
-    "name": "Micronesia (Federated States of)",
+    "name": "Micronesia",
     "topLevelDomain": [
       ".fm"
     ],
@@ -11008,7 +11008,7 @@
     "cioc": "FSM"
   },
   {
-    "name": "Moldova (Republic of)",
+    "name": "Moldova",
     "topLevelDomain": [
       ".md"
     ],
@@ -12415,7 +12415,7 @@
     "cioc": ""
   },
   {
-    "name": "Korea (Democratic People's Republic of)",
+    "name": "North Korea",
     "topLevelDomain": [
       ".kp"
     ],
@@ -12863,7 +12863,7 @@
     "cioc": "PLW"
   },
   {
-    "name": "Palestine, State of",
+    "name": "Palestine",
     "topLevelDomain": [
       ".ps"
     ],
@@ -13681,7 +13681,7 @@
     "cioc": "QAT"
   },
   {
-    "name": "Republic of Kosovo",
+    "name": "Kosovo",
     "topLevelDomain": [
       ""
     ],
@@ -13760,7 +13760,7 @@
     "cioc": null
   },
   {
-    "name": "Réunion",
+    "name": "Reunion",
     "topLevelDomain": [
       ".re"
     ],
@@ -13908,7 +13908,7 @@
     "cioc": "ROU"
   },
   {
-    "name": "Russian Federation",
+    "name": "Rusia",
     "topLevelDomain": [
       ".ru"
     ],
@@ -14156,7 +14156,7 @@
     "cioc": ""
   },
   {
-    "name": "Saint Helena, Ascension and Tristan da Cunha",
+    "name": "Saint Helena",
     "topLevelDomain": [
       ".sh"
     ],
@@ -15863,7 +15863,7 @@
     "cioc": ""
   },
   {
-    "name": "Korea (Republic of)",
+    "name": "South Korea",
     "topLevelDomain": [
       ".kr"
     ],
@@ -15884,7 +15884,7 @@
       37.0,
       127.5
     ],
-    "demonym": "South Korean",
+    "demonym": "South Korea",
     "area": 100210.0,
     "gini": 31.3,
     "timezones": [
@@ -16655,7 +16655,7 @@
     "cioc": "SUI"
   },
   {
-    "name": "Syrian Arab Republic",
+    "name": "Syria",
     "topLevelDomain": [
       ".sy"
     ],
@@ -16871,7 +16871,7 @@
     "cioc": "TJK"
   },
   {
-    "name": "Tanzania, United Republic of",
+    "name": "Tanzania",
     "topLevelDomain": [
       ".tz"
     ],
@@ -17966,7 +17966,7 @@
     "cioc": "UAE"
   },
   {
-    "name": "United Kingdom of Great Britain and Northern Ireland",
+    "name": "United Kingdom",
     "topLevelDomain": [
       ".uk"
     ],
@@ -18044,7 +18044,7 @@
     "cioc": "GBR"
   },
   {
-    "name": "United States of America",
+    "name": "United States",
     "topLevelDomain": [
       ".us"
     ],

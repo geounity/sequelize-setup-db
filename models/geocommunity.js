@@ -11,13 +11,14 @@ module.exports = config => {
     {
       uuid: {
         type: Sequelize.UUID,
-        // allowNull: false,
-        unique: true,
-        defaultValue: Sequelize.UUIDV4
+        primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
+        validate: { isUUID: 4 }
       },
       name: {
         type: Sequelize.STRING(100),
-        allowNull: false
+        allowNull: false,
+        unique: false
       },
       level: {
         type: Sequelize.INTEGER,
