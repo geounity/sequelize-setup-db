@@ -32,11 +32,11 @@ module.exports = config => {
       },
       name: {
         type: Sequelize.STRING(50),
-        allowNull: true,
+        allowNull: true
       },
       lastname: {
         type: Sequelize.STRING(50),
-        allowNull: true,
+        allowNull: true
       },
       service: {
         type: Sequelize.STRING(20),

@@ -32,6 +32,7 @@ async function setup () {
     try {
       conn = await db(config.dev)
       console.log(chalk.cyan('----------------------------------------------------------------------'))
+      console.log(chalk.cyan('[DEVELOPMENT]'))
       console.log(chalk.green('[Success!]'))
     } catch (e) {
       handleFatalError(e)
@@ -40,6 +41,7 @@ async function setup () {
     try {
       conn = await db(config.production)
       console.log(chalk.cyan('----------------------------------------------------------------------'))
+      console.log(chalk.cyan('[PRODUCTION]'))
       console.log(chalk.green('[Success!]'))
     } catch (e) {
       handleFatalError(e)
@@ -57,6 +59,7 @@ async function setup () {
   await client.connect()
   await client.query(countriesSQL, (err) => err ? handleFatalError(err) : '')
   await client.query(statesSQL, (err) => err ? handleFatalError(err) : '')
+  console.log('POR SUPUESTA HASTA ACA LLEGAMOS')
 
   // JSON files of http://restcountries.es
   const continents = require('./fixtures/continents')
@@ -133,7 +136,6 @@ async function setup () {
     console.log('States: ', s.state, ' id: ', s.id)
   }
   await client.end()
-
 }
 
 function handleFatalError (err) {
