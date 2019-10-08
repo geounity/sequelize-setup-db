@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "DEBUG=gu:* nyc --reporter=lcov ava tests/ --verbose",
-    "setup": "PGUSER=seba PGHOST=localhost PGPASSWORD='Luis Alberto Spinetta' PGDATABASE=geounity_db PGPORT=5432 DEBUG=gu:* node setup.js",
+    "setup": "PGUSER=seba PGHOST=localhost PGDATABASE=geounity PGPORT=5432 DEBUG=gu:* node setup.js",
     "lint": "standard --fix"
   },
   "repository": {
@@ -24,16 +24,16 @@
     "longjohn": "^0.2.12",
     "minimist": "^1.2.0",
     "nyc": "^14.1.1",
-    "standard": "^12.0.1"
+    "standard": "^14.3.1"
   },
   "dependencies": {
-    "braces": ">=2.3.1",
-    "chalk": "^2.4.0",
-    "debug": "^3.1.0",
-    "inquirer": "^5.2.0",
-    "js-yaml": ">=3.13.1",
-    "pg": "^7.6.1",
-    "pg-hstore": "^2.3.2",
-    "sequelize": "^5.9.4"
+    "braces": "^3.0.2",
+    "chalk": "^2.4.2",
+    "debug": "^4.1.1",
+    "inquirer": "^7.0.0",
+    "js-yaml": "^3.13.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.19.4"
   }
 }
