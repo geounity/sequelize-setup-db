@@ -4,12 +4,12 @@
 
 const Sequelize = require('sequelize')
 const connectionDB = require('../lib/db')
+class User extends Sequelize.Model {}
 
 module.exports = config => {
   const sequelize = connectionDB(config)
 
-  return sequelize.define(
-    'user',
+  return User.init(
     {
       username: {
         type: Sequelize.STRING(15),
@@ -25,38 +25,45 @@ module.exports = config => {
         }
       },
       email: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING(254),
         unique: true,
         allowNull: false,
-        validate: { notEmpty: true, isEmail: true }
+        validate: {
+          notEmpty: true,
+          isEmail: true,
+          max: 254
+        }
       },
       name: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(30),
         allowNull: true
       },
       lastname: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(30),
         allowNull: true
       },
       service: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(30),
         allowNull: true
       },
       id_doc_firestore: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(30),
         allowNull: true
       },
       photo: {
-        type: Sequelize.STRING(400),
+        type: Sequelize.STRING(30),
         allowNull: true
       },
       datebirth: {
         type: Sequelize.DATEONLY,
-        allowNull: true,
-        defaultValue: Sequelize.NOW
+        allowNull: true
       }
     },
 
-    {}
+    // Configuration
+    {
+      sequelize,
+      modelName: 'user'
+    }
   )
 }

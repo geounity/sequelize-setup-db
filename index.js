@@ -1,41 +1,40 @@
-'use strict'
+const debug = require('debug')('geounity:db:index')
+
+// Servicio de Sequelize
+import connectionDB from './lib/db'
+
+// Modelos
+import setupAimModel from './models/aim'
+import setupAnswerModel from './models/answer'
+import setupGeopoliticModel from './models/geopolitics'
+import setupCommunityFundModel from './models/community_fund'
+import setupCountryModel from './models/country'
+import setupDebateModel from './models/debate'
+import setupDenunciasModel from './models/denuncias'
+import setupDonationsModel from './models/donations'
+import setupOpinionModel from './models/opinion'
+import setupOrganizationModel from './models/organization'
+import setupPointOfView from './models/point_of_view'
+import setupPollModel from './models/poll'
+import setupQuestionAimModel from './models/question'
+import setupResourceHumanModel from './models/resources_humans'
+import setupResourceMaterialModel from './models/resources_materials'
+import setupStateModel from './models/state'
+import setupStaticModel from './models/static'
+import setupSubAnswerModel from './models/subanswer'
+import setupSubQuestionModel from './models/subquestion'
+import setupUserModel from './models/user'
+
+// Servicios
+import GeopoliticService from './lib/geopolitic'
+import CountryService from './lib/country'
+import StateService from './lib/state'
+import UserService from './lib/user'
+import DebateService from './lib/debate'
 
 if (process.env.NODE_ENV !== 'production') {
   require('longjohn') // Longjohn entrega mas información cuando ocurre un error.
 }
-
-// Servicio de Sequelize
-const connectionDB = require('./lib/db')
-
-// Modelos
-const setupAimModel = require('./models/aim')
-const setupAnswerModel = require('./models/answer')
-const setupGeocommunityModel = require('./models/geocommunity')
-const setupCommunityFundModel = require('./models/community_fund')
-const setupCountryModel = require('./models/country')
-const setupDebateModel = require('./models/debate')
-const setupDenunciasModel = require('./models/denuncias')
-const setupDonationsModel = require('./models/donations')
-const setupGroupsModel = require('./models/groups')
-const setupOpinionModel = require('./models/opinion')
-const setupOrganizationModel = require('./models/organization')
-const setupPollModel = require('./models/poll')
-const setupQuestionAimModel = require('./models/question')
-const setupRegionModel = require('./models/region')
-const setupResourceHumanModel = require('./models/resources_humans')
-const setupResourceMaterialModel = require('./models/resources_materials')
-const setupStateModel = require('./models/state')
-const setupStaticModel = require('./models/static')
-const setupSubAnswerModel = require('./models/subanswer')
-const setupSubQuestionModel = require('./models/subquestion')
-const setupUserModel = require('./models/user')
-
-// Servicios
-const GeocommunityService = require('./lib/geocommunity')
-const CountryService = require('./lib/country')
-const StateService = require('./lib/state')
-const UserService = require('./lib/user')
-const DebateService = require('./lib/debate')
 
 module.exports = async function (config) {
   // Instancia de sequelize
@@ -44,18 +43,17 @@ module.exports = async function (config) {
   // Instancias de los modelos
   const AimModel = setupAimModel(config)
   const AnswerModel = setupAnswerModel(config)
-  const GeocommunityModel = setupGeocommunityModel(config)
+  const GeopoliticModel = setupGeopoliticModel(config)
   const CommunityFundModel = setupCommunityFundModel(config)
   const CountryModel = setupCountryModel(config)
   const DebateModel = setupDebateModel(config)
   const DenunciasModel = setupDenunciasModel(config)
   const DonationsModel = setupDonationsModel(config)
-  const GroupsModel = setupGroupsModel(config)
   const OpinionModel = setupOpinionModel(config)
   const OrganizationModel = setupOrganizationModel(config)
+  const PointOfViewModel = setupPointOfView(config)
   const PollModel = setupPollModel(config)
   const QuestionAimModel = setupQuestionAimModel(config)
-  const RegionModel = setupRegionModel(config)
   const ResourceHumanModel = setupResourceHumanModel(config)
   const ResourceMaterialModel = setupResourceMaterialModel(config)
   const StateModel = setupStateModel(config)
@@ -74,35 +72,44 @@ module.exports = async function (config) {
   AnswerModel.belongsTo(UserModel)
   AnswerModel.belongsTo(QuestionAimModel)
   AnswerModel.hasMany(SubQuestionModel)
-  GeocommunityModel.belongsToMany(UserModel, { through: 'R_user_geocommunity' })
-  GeocommunityModel.hasMany(AimModel)
-  GeocommunityModel.hasMany(DebateModel)
-  GeocommunityModel.hasMany(PollModel)
-  GeocommunityModel.hasOne(GroupsModel)
-  GeocommunityModel.hasOne(OrganizationModel)
-  GeocommunityModel.hasOne(RegionModel)
   CommunityFundModel.belongsTo(AimModel)
   CommunityFundModel.belongsTo(UserModel)
   CommunityFundModel.hasMany(DonationsModel)
   CountryModel.hasMany(StateModel)
-  CountryModel.belongsTo(GeocommunityModel)
+  CountryModel.belongsTo(GeopoliticModel)
   DebateModel.belongsTo(UserModel)
   DebateModel.belongsToMany(AimModel, { through: 'R_debate_aim' })
+  DebateModel.hasMany(PointOfViewModel)
   DebateModel.belongsToMany(PollModel, { through: 'R_debate_poll' })
   DonationsModel.belongsTo(UserModel)
   DonationsModel.belongsTo(CommunityFundModel)
+  GeopoliticModel.belongsToMany(UserModel, { through: 'R_user_geopolitic' })
+  GeopoliticModel.hasMany(AimModel)
+  GeopoliticModel.hasMany(DebateModel)
+  GeopoliticModel.hasMany(PollModel)
   OpinionModel.belongsTo(UserModel)
-  OpinionModel.belongsTo(GeocommunityModel)
+  OpinionModel.belongsTo(PointOfViewModel)
   OpinionModel.belongsToMany(StaticModel, { through: 'R_static_opinion' })
+  OrganizationModel.belongsToMany(UserModel, {
+    through: 'R_user_organization'
+  })
+  OrganizationModel.hasMany(AimModel)
+  OrganizationModel.hasMany(DebateModel)
+  OrganizationModel.hasMany(PollModel)
+  PointOfViewModel.belongsTo(DebateModel)
+  PointOfViewModel.belongsTo(GeopoliticModel)
+  PointOfViewModel.belongsTo(OrganizationModel)
+  PollModel.belongsTo(UserModel)
+  PollModel.belongsToMany(DebateModel, { through: 'R_debate_poll' })
+  PollModel.belongsTo(GeopoliticModel)
   QuestionAimModel.belongsTo(UserModel)
   QuestionAimModel.belongsTo(AimModel)
   QuestionAimModel.hasMany(AnswerModel)
   ResourceHumanModel.belongsToMany(UserModel, { through: 'R_rh_user' })
   ResourceHumanModel.belongsTo(AimModel)
-  ResourceMaterialModel.belongsTo(UserModel, { through: 'R_rm_user' })
   ResourceMaterialModel.belongsTo(AimModel)
   StateModel.belongsTo(CountryModel)
-  StateModel.belongsTo(GeocommunityModel)
+  StateModel.belongsTo(GeopoliticModel)
   StaticModel.belongsToMany(OpinionModel, { through: 'R_static_opinion' })
   SubAnswerModel.belongsTo(UserModel)
   SubAnswerModel.belongsToMany(SubQuestionModel, {
@@ -113,10 +120,8 @@ module.exports = async function (config) {
   SubQuestionModel.belongsToMany(SubAnswerModel, {
     through: 'R_subquestion_subanswer'
   })
-  PollModel.belongsTo(UserModel)
-  PollModel.belongsToMany(DebateModel, { through: 'R_debate_poll' })
-  PollModel.belongsTo(GeocommunityModel)
-  UserModel.belongsToMany(GeocommunityModel, { through: 'R_user_geocommunity' })
+  UserModel.belongsToMany(GeopoliticModel, { through: 'R_user_geopolitic' })
+  UserModel.belongsToMany(OrganizationModel, { through: 'R_user_organization' })
   UserModel.hasMany(AimModel)
   UserModel.hasMany(DebateModel)
   UserModel.hasMany(PollModel)
@@ -125,20 +130,17 @@ module.exports = async function (config) {
   UserModel.hasMany(SubQuestionModel)
   UserModel.hasMany(AnswerModel)
   UserModel.belongsToMany(ResourceHumanModel, { through: 'R_rh_user' })
-  UserModel.belongsToMany(ResourceMaterialModel, { through: 'R_rm_user' })
   UserModel.hasMany(DonationsModel)
   UserModel.hasMany(CommunityFundModel)
   UserModel.hasMany(DenunciasModel)
 
-  // Con await si esta funcion falla no se sigue ejecutando lo demas
-  // El que llame a la funcion con async tendrá que hacer el control de errores
   await sequelize.authenticate()
 
-  console.log(`SETUP: ${config.setup}`)
+  debug(`SETUP: ${config.setup}`)
   if (config.setup) {
     await sequelize.sync({ force: true })
   }
-  console.log('--FINISH SYNC--')
+  debug('--FINISH SYNC--')
 
   const Aim = {}
   const Answer = {}
@@ -147,12 +149,12 @@ module.exports = async function (config) {
   const Debate = DebateService(DebateModel, UserModel)
   const Denuncias = {}
   const Donation = {}
-  const Geocommunity = GeocommunityService(GeocommunityModel)
+  const Geopolitic = GeopoliticService(GeopoliticModel)
   const Opinion = {}
   const Organization = {}
+  const PointOfView = {}
   const Poll = {}
   const QuestionAim = {}
-  const Region = {}
   const ResourceHuman = {}
   const ResourceMaterial = {}
   const SubQuestion = {}
@@ -169,17 +171,17 @@ module.exports = async function (config) {
     Debate,
     Denuncias,
     Donation,
-    Geocommunity,
+    Geopolitic,
     Opinion,
     Organization,
+    PointOfView,
+    Poll,
     QuestionAim,
-    Region,
     ResourceHuman,
     ResourceMaterial,
     State,
     Static,
     SubQuestion,
-    Poll,
     User
   }
 }

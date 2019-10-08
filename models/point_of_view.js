@@ -10,7 +10,7 @@ module.exports = config => {
   return PointOfView.init(
     {
       name: {
-        type: Sequelize.STRING(25),
+        type: Sequelize.STRING(30),
         allowNull: true
       },
       cant_people: {

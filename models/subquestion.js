@@ -10,7 +10,7 @@ module.exports = config => {
   return Subquestion.init(
     {
       content: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(255),
         allowNull: false
       },
       level: {

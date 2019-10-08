@@ -66,18 +66,18 @@ async function setup () {
   const countries = require('./fixtures/countries')
 
   // Create first community global
-  // Every one geocommunity is in other inside. Except global. Here inside inself
-  const { Geocommunity, Country, State } = await conn
-  await Geocommunity.create({
+  // Every one geopolitic is in other inside. Except global. Here inside inself
+  const { Geopolitic, Country, State } = await conn
+  await Geopolitic.create({
     name: 'Global',
     level: 1,
     division_name: 'continents'
   })
 
   // Create second community - Continents
-  let uuid = await Geocommunity.getUuidByNameAndLevel('Global', 1)
-  for (let c of continents) {
-    await Geocommunity.create({
+  const uuid = await Geopolitic.getUuidByNameAndLevel('Global', 1)
+  for (const c of continents) {
+    await Geopolitic.create({
       name: c.name,
       level: 2,
       division_name: 'countries',
@@ -86,8 +86,8 @@ async function setup () {
   }
 
   // Create third community countries and save country table
-  for (let c of countries) {
-    let uuid = await Geocommunity.getUuidByNameAndLevel(c.region, 2)
+  for (const c of countries) {
+    const uuid = await Geopolitic.getUuidByNameAndLevel(c.region, 2)
     let divisionName
     switch (c.alpha2Code) {
       case 'UY':
@@ -99,15 +99,15 @@ async function setup () {
       default:
         divisionName = 'Estados'
     }
-    let created = await Geocommunity.create({
+    const created = await Geopolitic.create({
       name: c.name,
       level: 3,
       population: c.population,
       division_name: divisionName,
       in_uuid: uuid
     })
-    let subsql = `SELECT COUNT(*) FROM states WHERE country_id = (SELECT id FROM countries WHERE code = '${c.alpha2Code}')`
-    let sql = `
+    const subsql = `SELECT COUNT(*) FROM states WHERE country_id = (SELECT id FROM countries WHERE code = '${c.alpha2Code}')`
+    const sql = `
       UPDATE countries
       SET flag='${c.flag}',
           population=${c.population},
@@ -115,23 +115,23 @@ async function setup () {
           subregion='${c.subregion}',
           division_name='${divisionName}',
           cant_states=(${subsql}),
-          geocommunity_uuid='${created.dataValues.uuid}'
+          geopolitic_uuid='${created.dataValues.uuid}'
       WHERE code='${c.alpha2Code}'`
     await client.query(sql)
     console.log('Country: ', c.name)
   }
 
   // Create ford community states and save state table
-  let states = await State.getAllStates()
-  for (let s of states) {
-    let { country } = await Country.getNameById(s.countryId)
-    let uuid = await Geocommunity.getUuidByNameAndLevel(country, 3)
-    let created = await Geocommunity.create({
+  const states = await State.getAllStates()
+  for (const s of states) {
+    const { country } = await Country.getNameById(s.countryId)
+    const uuid = await Geopolitic.getUuidByNameAndLevel(country, 3)
+    const created = await Geopolitic.create({
       name: s.state,
       level: 4,
       in_uuid: uuid
     })
-    let sql = `UPDATE states SET geocommunity_uuid='${created.dataValues.uuid}' WHERE id='${s.id}'`
+    const sql = `UPDATE states SET geopolitic_uuid='${created.dataValues.uuid}' WHERE id='${s.id}'`
     await client.query(sql)
     console.log('States: ', s.state, ' id: ', s.id)
   }

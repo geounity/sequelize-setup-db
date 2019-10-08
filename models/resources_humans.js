@@ -12,7 +12,7 @@ module.exports = config => {
   return resourcesHuman.init(
     {
       images: {
-        type: Sequelize.STRING(30),
+        type: Sequelize.ARRAY(Sequelize.STRING(30)),
         allowNull: true
       },
       description: {

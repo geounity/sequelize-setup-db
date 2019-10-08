@@ -2,12 +2,12 @@
 
 const Sequelize = require('sequelize')
 const connectionDB = require('../lib/db')
-class Geocommunity extends Sequelize.Model {}
+class Geopolitics extends Sequelize.Model {}
 
 module.exports = config => {
   const sequelize = connectionDB(config)
 
-  return Geocommunity.init(
+  return Geopolitics.init(
     {
       uuid: {
         type: Sequelize.UUID,
@@ -36,7 +36,7 @@ module.exports = config => {
       in_uuid: {
         type: Sequelize.UUID,
         references: {
-          model: 'geocommunities',
+          model: 'geopolitics',
           key: 'uuid',
           deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
         }
@@ -44,7 +44,7 @@ module.exports = config => {
     },
     {
       sequelize,
-      modelName: 'geocommunity'
+      modelName: 'geopolitic'
     }
   )
 }

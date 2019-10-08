@@ -11,7 +11,7 @@ module.exports = config => {
     {
       type: {
         type: Sequelize.ENUM,
-        values: ['communities', 'idelogics', 'organizations'], // Define un filtro para los puntos de vista
+        values: ['geopolitics', 'idelogics', 'organizations'], // Define un filtro para los puntos de vista
         allowNull: false
       },
       public: {
