@@ -1,5 +1,3 @@
-const debug = require('debug')('geounity:db:index')
-
 // Servicio de Sequelize
 import connectionDB from './lib/db'
 
@@ -31,6 +29,8 @@ import CountryService from './lib/country'
 import StateService from './lib/state'
 import UserService from './lib/user'
 import DebateService from './lib/debate'
+
+const debug = require('debug')('geounity:db:index')
 
 if (process.env.NODE_ENV !== 'production') {
   require('longjohn') // Longjohn entrega mas información cuando ocurre un error.
