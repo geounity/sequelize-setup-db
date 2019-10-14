@@ -1,34 +1,36 @@
+'use strict'
+
 // Servicio de Sequelize
-import connectionDB from './lib/db'
+const connectionDB = require('./lib/db')
 
 // Modelos
-import setupAimModel from './models/aim'
-import setupAnswerModel from './models/answer'
-import setupGeopoliticModel from './models/geopolitics'
-import setupCommunityFundModel from './models/community_fund'
-import setupCountryModel from './models/country'
-import setupDebateModel from './models/debate'
-import setupDenunciasModel from './models/denuncias'
-import setupDonationsModel from './models/donations'
-import setupOpinionModel from './models/opinion'
-import setupOrganizationModel from './models/organization'
-import setupPointOfView from './models/point_of_view'
-import setupPollModel from './models/poll'
-import setupQuestionAimModel from './models/question'
-import setupResourceHumanModel from './models/resources_humans'
-import setupResourceMaterialModel from './models/resources_materials'
-import setupStateModel from './models/state'
-import setupStaticModel from './models/static'
-import setupSubAnswerModel from './models/subanswer'
-import setupSubQuestionModel from './models/subquestion'
-import setupUserModel from './models/user'
+const setupAimModel = require('./models/aim')
+const setupAnswerModel = require('./models/answer')
+const setupGeopoliticModel = require('./models/geopolitics')
+const setupCommunityFundModel = require('./models/community_fund')
+const setupCountryModel = require('./models/country')
+const setupDebateModel = require('./models/debate')
+const setupDenunciasModel = require('./models/denuncias')
+const setupDonationsModel = require('./models/donations')
+const setupOpinionModel = require('./models/opinion')
+const setupOrganizationModel = require('./models/organization')
+const setupPointOfView = require('./models/point_of_view')
+const setupPollModel = require('./models/poll')
+const setupQuestionAimModel = require('./models/question')
+const setupResourceHumanModel = require('./models/resources_humans')
+const setupResourceMaterialModel = require('./models/resources_materials')
+const setupStateModel = require('./models/state')
+const setupStaticModel = require('./models/static')
+const setupSubAnswerModel = require('./models/subanswer')
+const setupSubQuestionModel = require('./models/subquestion')
+const setupUserModel = require('./models/user')
 
 // Servicios
-import GeopoliticService from './lib/geopolitic'
-import CountryService from './lib/country'
-import StateService from './lib/state'
-import UserService from './lib/user'
-import DebateService from './lib/debate'
+const GeopoliticService = require('./lib/geopolitic')
+const CountryService = require('./lib/country')
+const StateService = require('./lib/state')
+const UserService = require('./lib/user')
+const DebateService = require('./lib/debate')
 
 const debug = require('debug')('geounity:db:index')
 
@@ -136,11 +138,10 @@ module.exports = async function (config) {
 
   await sequelize.authenticate()
 
-  debug(`SETUP: ${config.setup}`)
   if (config.setup) {
+    debug(`SETUP TRUE: ${config.setup}`)
     await sequelize.sync({ force: true })
   }
-  debug('--FINISH SYNC--')
 
   const Aim = {}
   const Answer = {}

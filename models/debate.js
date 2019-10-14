@@ -11,7 +11,7 @@ module.exports = config => {
     {
       type: {
         type: Sequelize.ENUM,
-        values: ['geopolitics', 'idelogics', 'organizations'], // Define un filtro para los puntos de vista
+        values: ['geopolitics', 'idelogics', 'bussines'], // Define un filtro para los puntos de vista
         allowNull: false
       },
       public: {
@@ -23,6 +23,11 @@ module.exports = config => {
         type: Sequelize.STRING(100),
         unique: true,
         allowNull: false
+      },
+      description: {
+        type: Sequelize.STRING(1000),
+        unique: false,
+        allowNull: true
       },
       images: {
         type: Sequelize.ARRAY(Sequelize.STRING(30)),
@@ -36,7 +41,7 @@ module.exports = config => {
       char_max: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 10
+        defaultValue: 200
       }
     },
 
