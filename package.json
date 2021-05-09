@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/geounity/db#readme",
   "devDependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "longjohn": "^0.2.12",
     "minimist": "^1.2.0",
     "nyc": "^14.1.1",
