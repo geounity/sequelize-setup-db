@@ -22,7 +22,7 @@
   "devDependencies": {
     "lodash": "^4.17.15",
     "longjohn": "^0.2.12",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.6",
     "nyc": "^14.1.1",
     "standard": "^14.3.1"
   },
